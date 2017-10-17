@@ -25,12 +25,21 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:recyclerview-v7:26.+'
+    compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:design:26.+'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    compile 'com.android.support:cardview-v7:26.+'
+    //gson library
     compile 'com.google.code.gson:gson:2.2.4'
+    //picasso library
     compile 'com.squareup.picasso:picasso:2.3.2'
+    //butterknife library
     compile 'com.jakewharton:butterknife:5.1.1'
+    //retrofit library
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    //retrofit converter library
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+
+    testCompile 'junit:junit:4.12'
 }
