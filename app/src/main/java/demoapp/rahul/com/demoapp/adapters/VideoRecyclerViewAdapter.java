@@ -43,6 +43,8 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        
+
         public ViewHolder(View itemView) {
             super(itemView);
         }

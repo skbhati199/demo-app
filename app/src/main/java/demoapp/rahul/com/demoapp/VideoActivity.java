@@ -4,7 +4,14 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+<<<<<<< HEAD
 import android.support.design.widget.TabLayout;
+=======
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+
+>>>>>>> 29223cdfa9a8bdc77d47daf30db8ac107d903a7e
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -138,11 +145,16 @@ public class VideoActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_video, container, false);
+<<<<<<< HEAD
             RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
             VideoRecyclerViewAdapter videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(PlaceholderFragment.mVideoList);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(videoRecyclerViewAdapter);
+=======
+            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+>>>>>>> 29223cdfa9a8bdc77d47daf30db8ac107d903a7e
             return rootView;
         }
 
