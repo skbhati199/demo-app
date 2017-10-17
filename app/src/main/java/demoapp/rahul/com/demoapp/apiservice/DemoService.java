@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 
 public interface DemoService {
 
+//    http://mobileapps.socialenginesolutions.com/videos/browse/limit/10/page/1?restApi=Sesapi&sesapi_platform=1&auth_token=6e2c544c72bc344c1507960883&language=en
     @GET("/videos/browse/limit/10/page/1?restApi=Sesapi&sesapi_platform=1&auth_token=6e2c544c72bc344c1507960883&language=en")
-    Call<List<VideoDemoModel>> listRepos();
+    Call<VideoDemoModel> getListVideos();
 }

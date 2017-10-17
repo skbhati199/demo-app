@@ -1,29 +1,43 @@
 package demoapp.rahul.com.demoapp;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
+
+import demoapp.rahul.com.demoapp.adapters.VideoRecyclerViewAdapter;
+import demoapp.rahul.com.demoapp.apiservice.DemoService;
+import demoapp.rahul.com.demoapp.model.VideoDemoModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class VideoActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+
+    private VideoDemoModel videoDemoModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +47,8 @@ public class VideoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
+        videoDemoModel = new VideoDemoModel();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), videoDemoModel);
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -51,6 +65,33 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
+
+        Retrofit retrofit = DemoApp.getRetrofit();
+        DemoService service = retrofit.create(DemoService.class);
+        Call<VideoDemoModel> callVideos = service.getListVideos();
+
+        callVideos.enqueue(new Callback<VideoDemoModel>() {
+            @Override
+            public void onResponse(Call<VideoDemoModel> call, Response<VideoDemoModel> response) {
+                if (response.body() != null) {
+                    VideoDemoModel videoDemoModel = response.body();
+                    mSectionsPagerAdapter.addItem(videoDemoModel);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideoDemoModel> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(VideoActivity.this, "Server error onFailure", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
 
@@ -78,12 +119,14 @@ public class VideoActivity extends AppCompatActivity {
     public static class PlaceholderFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static VideoDemoModel mVideoList;
 
         public PlaceholderFragment() {
         }
 
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, VideoDemoModel videoList) {
+            PlaceholderFragment.mVideoList = videoList;
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -95,22 +138,30 @@ public class VideoActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_video, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+            VideoRecyclerViewAdapter videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(PlaceholderFragment.mVideoList);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(videoRecyclerViewAdapter);
             return rootView;
         }
+
+
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private VideoDemoModel mVideoList;
+
+        public SectionsPagerAdapter(FragmentManager fm, VideoDemoModel mVideoList) {
             super(fm);
+            this.mVideoList = mVideoList;
         }
 
         @Override
         public Fragment getItem(int position) {
 
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position + 1, mVideoList);
         }
 
         @Override
@@ -130,6 +181,12 @@ public class VideoActivity extends AppCompatActivity {
                     return "Browse P";
             }
             return null;
+        }
+
+
+        public void addItem(VideoDemoModel videoDemoModel) {
+            this.mVideoList= videoDemoModel;
+            notifyDataSetChanged();
         }
     }
 }
