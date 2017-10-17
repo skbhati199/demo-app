@@ -4,14 +4,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-<<<<<<< HEAD
 import android.support.design.widget.TabLayout;
-=======
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-
->>>>>>> 29223cdfa9a8bdc77d47daf30db8ac107d903a7e
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -26,9 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import demoapp.rahul.com.demoapp.adapters.VideoRecyclerViewAdapter;
 import demoapp.rahul.com.demoapp.apiservice.DemoService;
@@ -72,26 +62,6 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
-
-        Retrofit retrofit = DemoApp.getRetrofit();
-        DemoService service = retrofit.create(DemoService.class);
-        Call<VideoDemoModel> callVideos = service.getListVideos();
-
-        callVideos.enqueue(new Callback<VideoDemoModel>() {
-            @Override
-            public void onResponse(Call<VideoDemoModel> call, Response<VideoDemoModel> response) {
-                if (response.body() != null) {
-                    VideoDemoModel videoDemoModel = response.body();
-                    mSectionsPagerAdapter.addItem(videoDemoModel);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VideoDemoModel> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(VideoActivity.this, "Server error onFailure", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -145,16 +115,31 @@ public class VideoActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_video, container, false);
-<<<<<<< HEAD
-            RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
-            VideoRecyclerViewAdapter videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(PlaceholderFragment.mVideoList);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(videoRecyclerViewAdapter);
-=======
-            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+            final RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+            Retrofit retrofit = DemoApp.getRetrofit();
+            DemoService service = retrofit.create(DemoService.class);
+            Call<VideoDemoModel> callVideos = service.getListVideos();
 
->>>>>>> 29223cdfa9a8bdc77d47daf30db8ac107d903a7e
+            callVideos.enqueue(new Callback<VideoDemoModel>() {
+                @Override
+                public void onResponse(Call<VideoDemoModel> call, Response<VideoDemoModel> response) {
+                    if (response.body() != null) {
+                        VideoDemoModel videoDemoModel = response.body();
+                        VideoRecyclerViewAdapter videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(videoDemoModel);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(videoRecyclerViewAdapter);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<VideoDemoModel> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(getActivity(), "Server error onFailure", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
             return rootView;
         }
 
@@ -197,7 +182,7 @@ public class VideoActivity extends AppCompatActivity {
 
 
         public void addItem(VideoDemoModel videoDemoModel) {
-            this.mVideoList= videoDemoModel;
+            this.mVideoList = videoDemoModel;
             notifyDataSetChanged();
         }
     }
