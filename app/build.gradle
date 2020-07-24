@@ -33,7 +33,7 @@ dependencies {
     //gson library
     compile 'com.google.code.gson:gson:2.2.4'
     //picasso library
-    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.squareup.picasso:picasso:2.71828'
     //butterknife library
     compile 'com.jakewharton:butterknife:10.2.1'
     //retrofit library
