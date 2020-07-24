@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:cardview-v7:26.+'
     //gson library
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.code.gson:gson:2.8.6'
     //picasso library
     compile 'com.squareup.picasso:picasso:2.71828'
     //butterknife library
