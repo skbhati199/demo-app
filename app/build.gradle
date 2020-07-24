@@ -37,7 +37,7 @@ dependencies {
     //butterknife library
     compile 'com.jakewharton:butterknife:8.8.1'
     //retrofit library
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:retrofit:2.9.0'
     //retrofit converter library
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     testCompile 'junit:junit:4.12'
