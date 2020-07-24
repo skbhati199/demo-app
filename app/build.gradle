@@ -35,7 +35,7 @@ dependencies {
     //picasso library
     compile 'com.squareup.picasso:picasso:2.3.2'
     //butterknife library
-    compile 'com.jakewharton:butterknife:8.8.1'
+    compile 'com.jakewharton:butterknife:10.2.1'
     //retrofit library
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     //retrofit converter library
